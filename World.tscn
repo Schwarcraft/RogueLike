@@ -3,8 +3,8 @@
 [ext_resource path="res://Art/WorldEnvior/Tileset.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Ogre.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Gui.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Bandit.tscn" type="PackedScene" id=6]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Tileset.png 0"
@@ -83,20 +83,7 @@ tile_data = PoolIntArray( -196595, 2, 0, -196594, 2, 0, -65539, 2, 0, -65538, 2,
 position = Vector2( 122.601, 163.52 )
 scale = Vector2( 3, 3 )
 
-[node name="Ogre2" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 582.203, 142.904 )
-
-[node name="Ogre3" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 263.734, 282.998 )
-
-[node name="Ogre4" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 719.039, 509.429 )
-
-[node name="Ogre5" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 797.231, 333.497 )
-
-[node name="Ogre6" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 61.7375, 457.301 )
+[node name="Bandit" parent="YSort" instance=ExtResource( 6 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 400.057, 251.931 )

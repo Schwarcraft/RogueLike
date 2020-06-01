@@ -20,6 +20,7 @@ var is_spirit_summoned : bool = false
 var attacking : bool = false
 
 func _ready() -> void:
+	GameData.player = self
 	health = max_health
 
 func get_input():
@@ -73,6 +74,8 @@ func get_input():
 		if Input.is_action_just_pressed('roll'):
 			if is_rolling == false:
 				is_rolling = true
+				if velocity == Vector2():
+					velocity = Vector2(1.0, 0.0)
 				speed=roll_speed
 				$HitBox.disabled = true
 				$AnimatedSprite.play("Roll")
@@ -95,7 +98,10 @@ func get_input():
 		
 
 func _physics_process(delta):
-	get_input()
+	if not is_rolling:
+		get_input()
+	else:
+		velocity = velocity.normalized()*roll_speed
 	velocity = move_and_slide(velocity)
 
 func done_rolling():

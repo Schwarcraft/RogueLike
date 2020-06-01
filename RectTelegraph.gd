@@ -7,6 +7,8 @@ export var attackTime = 1
 export var damage = 20
 export var duration = 0
 
+
+
 var attacking = false
 var targets = []
 

@@ -2,7 +2,7 @@ extends Node2D
 
 var Player
 
-var damage = 25
+var damage = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -21,7 +21,10 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		if Player.is_rolling == false:
 			$Sprite/Area2D/CollisionShape2D.disabled=false
-			$Sprite/AnimationPlayer.play("Attack")
+			if $Sprite.flip_v == true:
+				$Sprite/AnimationPlayer.play("Attack (copy)")
+			else:
+				$Sprite/AnimationPlayer.play("Attack")
 
 
 func _on_Area2D_body_entered(body: Node) -> void:

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Enemy-Sheet.png-33931789fab766ed1c1e6764c3a263b7.stex"
+path="res://.import/Bandit_sheet.png-20945f3fe99fedf2cc7abeebc9eaabf0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Sprites/Enemy-Sheet.png"
-dest_files=[ "res://.import/Enemy-Sheet.png-33931789fab766ed1c1e6764c3a263b7.stex" ]
+source_file="res://Art/Sprites/Bandit_sheet.png"
+dest_files=[ "res://.import/Bandit_sheet.png-20945f3fe99fedf2cc7abeebc9eaabf0.stex" ]
 
 [params]
 
