@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GradientTexture" id=1]
+
+[node name="Polygon2D" type="Polygon2D"]
+texture = SubResource( 1 )
+polygon = PoolVector2Array( 30.9977, -3.30997, 25.8491, 29.2424, 102.58, 51.8297, 121.513, 11.6375, 102.746, 0.17778, 109.057, -37.357, 84.8087, -45.8273, 67.8682, -15.1019, 67.0378, -1.15088, 42.7896, -5.13689 )

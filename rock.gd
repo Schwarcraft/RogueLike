@@ -20,6 +20,6 @@ func _process(delta: float) -> void:
 
 
 
-func _on_AnimationPlayer_animation_finished() -> void:
+func _on_AnimationPlayer_animation_finished(anim_name) -> void:
 	GameData.screenShake()
 	queue_free()
