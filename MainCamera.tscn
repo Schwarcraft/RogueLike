@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=1]
+
+[node name="Camera2D" type="Camera2D"]
+position = Vector2( 400.057, 251.931 )
+current = true
+
+[node name="ScreenShake" parent="." instance=ExtResource( 1 )]

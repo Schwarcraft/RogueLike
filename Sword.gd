@@ -28,7 +28,8 @@ func _process(delta: float) -> void:
 
 
 func _on_Area2D_body_entered(body: Node) -> void:
-	body.take_damage(damage)
+	if body.has_method("take_damage"):
+		body.take_damage(damage)
 
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:

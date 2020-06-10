@@ -1,11 +1,12 @@
 extends KinematicBody2D
 
-export (int) var base_speed = 200
-export (int) var roll_speed = 400
+export (float) var base_speed = 1.5
+export (float) var roll_speed = 2.5
 export (int) var max_health = 100
 
 var health
 onready var spirit_node = preload("res://Spirit.tscn")
+onready var gui_node = preload("res://Gui.tscn")
 var speed : int = base_speed
 var roll_color : Color = Color(0,255,0)
 var default_color : Color = Color(255,255,100,255)
@@ -20,6 +21,8 @@ var is_spirit_summoned : bool = false
 var attacking : bool = false
 
 func _ready() -> void:
+	var gui_instance = gui_node.instance()
+	add_child(gui_instance)
 	GameData.player = self
 	health = max_health
 
@@ -77,7 +80,7 @@ func get_input():
 				if velocity == Vector2():
 					velocity = Vector2(1.0, 0.0)
 				speed=roll_speed
-				$HitBox.disabled = true
+#				$HitBox.disabled = true
 				$AnimatedSprite.play("Roll")
 				if $AnimatedSprite.flip_h == false:
 					$AnimationPlayer.play("Roll")
@@ -102,7 +105,7 @@ func _physics_process(delta):
 		get_input()
 	else:
 		velocity = velocity.normalized()*roll_speed
-	velocity = move_and_slide(velocity)
+	var collide = move_and_collide(velocity)
 
 func done_rolling():
 	is_rolling = false
@@ -120,7 +123,7 @@ func _reset_attack() -> void:
 	$AnimatedSprite.flip_h = false
 
 
-func take_damage(damage, duration):
+func player_take_damage(damage, duration):
 	if duration == 0:
 		health -= damage
 		GameData.player_health = health

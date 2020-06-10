@@ -23,6 +23,7 @@ func _ready() -> void:
 	timer.wait_time = attackTime
 	set_process(false)
 	hide()
+	aim_target = GameData.player
 
 func _process(delta: float) -> void:
 	if attacking:
@@ -43,8 +44,8 @@ func _on_Area2D_body_exited(body: Node) -> void:
 	targets.erase(body)
 
 func deal_damage(target):
-	if target.has_method("take_damage"):
-		target.take_damage(damage, duration)
+	if target.has_method("player_take_damage"):
+		target.player_take_damage(damage, duration)
 		
 func attack():
 	if aim_target != null:
