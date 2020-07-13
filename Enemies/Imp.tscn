@@ -1,22 +1,66 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Art/Sprites/Imp/imp_idle_anim_f0.png" type="Texture" id=1]
 [ext_resource path="res://Art/Sprites/Imp/imp_idle_anim_f1.png" type="Texture" id=2]
 [ext_resource path="res://Art/Sprites/Imp/imp_idle_anim_f2.png" type="Texture" id=3]
 [ext_resource path="res://Art/Sprites/Imp/imp_idle_anim_f3.png" type="Texture" id=4]
+[ext_resource path="res://Art/Sprites/Imp/imp_run_anim_f3.png" type="Texture" id=5]
+[ext_resource path="res://Art/Sprites/Imp/imp_run_anim_f0.png" type="Texture" id=6]
+[ext_resource path="res://Art/Sprites/Imp/imp_run_anim_f2.png" type="Texture" id=7]
+[ext_resource path="res://Art/Sprites/Imp/imp_run_anim_f1.png" type="Texture" id=8]
+[ext_resource path="res://AttackTelegraph.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Enemies/Imp.gd" type="Script" id=10]
+[ext_resource path="res://HealthBar.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Art/Particles/FireSpawn.tscn" type="PackedScene" id=12]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": true,
 "name": "Idle",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Run",
 "speed": 5.0
 } ]
 
-[node name="KinematicBody2D" type="KinematicBody2D"]
+[sub_resource type="CircleShape2D" id=2]
+radius = 6.46789
+
+[node name="Imp" type="KinematicBody2D"]
+collision_layer = 4
+script = ExtResource( 10 )
+attack_range = 200
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "Idle"
+animation = "Run"
 frame = 3
-playing = true
+speed_scale = 2.0
+
+[node name="AttackTelegraph" parent="." instance=ExtResource( 9 )]
+visible = false
+position = Vector2( 0, 4 )
+z_index = 4096
+attackRange = 75
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0.566963, 2.7538 )
+shape = SubResource( 2 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 11 )]
+margin_left = -7.93314
+margin_top = -8.70441
+margin_right = 32.0669
+margin_bottom = 31.2956
+
+[node name="Particles2D" parent="." instance=ExtResource( 12 )]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

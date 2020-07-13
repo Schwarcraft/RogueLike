@@ -1,12 +1,16 @@
 extends KinematicBody2D
 
-export var cast_radius = 300
-export var number_of_points = 100
+export var cast_radius = 500
+export var number_of_points = 50
 export var max_health = 250
+
+var counter : int = 0 
 
 onready var melee_attack = $RectTelegraph
 
 var raycast_array : PoolVector2Array
+var spawn_points : PoolVector2Array
+
 var new_vector : Vector2
 var health : float
 var targets = []
@@ -62,26 +66,37 @@ func _physics_process(delta: float) -> void:
 
 func _on_DamageArea_body_entered(body: Node) -> void:
 	targets.append(body)
-	print("in")
 
 func _on_DamageArea_body_exited(body: Node) -> void:
 	targets.erase(body)
-	print("out")
 
 
 func deal_damage():
+	$AnimatedSprite.playing=true
+	$AnimatedSprite/AnimationPlayer.stop()
 	$MeleeAttackTimer.start()
 	for target in targets:
 		if target.has_method("player_take_damage"):
 			target.player_take_damage(damage, duration)
+			
+	if counter >= 2:
+		$Drawer/Timer.stop()
+		_teleport()
+		counter = 0
 
 
 func _on_CircleAttacktimer_timeout() -> void:
+	$Drawer.show()
+	$AnimatedSprite/AnimationPlayer.play("Charge_Beam")
+	$AnimatedSprite.playing=false
 	$MeleeAttackTimer.stop()
 	casting = true
+	counter +=1
+	
 
 
 func take_damage(damage : float):
+	$AnimatedSprite/AnimationPlayer.play("Hit")
 	health -= damage
 	$HealthBar/TextureProgress.value = (health/max_health) *100
 	print((health/max_health) *100)
@@ -91,4 +106,15 @@ func take_damage(damage : float):
 
 func _on_MeleeAttackTimer_timeout() -> void:
 	is_melee_attacking = false
+	
+func _teleport():
+	$TeleportTimer.start()
+	$Particles2D.emitting = true
 
+
+func _on_TeleportTimer_timeout() -> void:
+	$TeleportTimer.stop()
+	var point = randi()%6
+	position = spawn_points[point]
+	$Drawer/Timer.start()
+	$Particles2D.emitting = false

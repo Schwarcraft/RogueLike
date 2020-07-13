@@ -1,7 +1,7 @@
 extends Node2D
 
 
-export var cast_radius = 200
+export var cast_radius = 500
 export var number_of_points = 40
 
 var new_point
@@ -9,7 +9,7 @@ var attackRange
 var shape_array : PoolVector2Array
 var timer_shape_array : PoolVector2Array
 var colors : PoolColorArray
-var color = Color(0.99,0.3,0.3,0.5)
+var color = Color(0.99,0.3,0.3,0.3)
 
 var is_base_drawn : bool = false
 var is_casting : bool = false
@@ -37,10 +37,11 @@ func _process(delta):
 
 func _draw() -> void:
 #	if is_base_drawn == false:
-	z_index=-1
-	draw_polygon(shape_array, colors)
-	is_base_drawn = true
-	draw_polygon(timer_shape_array, colors)
+	if shape_array.size()>10:
+		z_index=-1
+		draw_polygon(shape_array, colors)
+		is_base_drawn = true
+		draw_polygon(timer_shape_array, colors)
 
 func _on_Timer_timeout() -> void:
 	$Timer.stop()

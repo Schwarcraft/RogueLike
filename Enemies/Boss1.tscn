@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Art/Sprites/Demon/big_demon_idle_anim_f2.png" type="Texture" id=1]
 [ext_resource path="res://Enemies/Boss1.gd" type="Script" id=2]
@@ -23,21 +23,104 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "Charge",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 8 ) ],
 "loop": true,
 "name": "Run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "Charge",
 "speed": 5.0
 } ]
 
 [sub_resource type="Animation" id=3]
 resource_name = "Charge_Beam"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 5, 0 ), Vector2( -3, -2 ), Vector2( 0, 5 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.203922, 0.0627451, 0.0627451, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "Hit"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0, 0.0741525, 0.207627, 1 )
+colors = PoolColorArray( 0.134845, 0.0600554, 0.0235301, 1, 0.19037, 0.0847841, 0.0332189, 1, 0.777344, 0.346202, 0.135644, 1, 0.289063, 0.265782, 0.265782, 1 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0, 0.719512 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.243902 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 10.0
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 25.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 6.0
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 5 )
 
 [node name="Boss1" type="KinematicBody2D"]
+position = Vector2( 5, 0 )
 collision_layer = 2
 script = ExtResource( 2 )
 cast_radius = 150
@@ -47,22 +130,27 @@ z_as_relative = false
 script = ExtResource( 3 )
 
 [node name="Timer" type="Timer" parent="Drawer"]
+wait_time = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 1 )
 
 [node name="DamageArea" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DamageArea"]
+visible = false
+polygon = PoolVector2Array( -16.367, -9.44771, 32.5674, -14.549, 22.0814, 28.9063 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "Idle"
-frame = 3
+frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite"]
 anims/Charge_Beam = SubResource( 3 )
+anims/Hit = SubResource( 9 )
 
 [node name="CircleAttacktimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -75,16 +163,26 @@ margin_right = 30.4895
 margin_bottom = 21.5589
 
 [node name="RectTelegraph" parent="." instance=ExtResource( 12 )]
+visible = false
 position = Vector2( 0, 6 )
 scale = Vector2( 0.05, 0.1 )
 
 [node name="MeleeAttackTimer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 0, 17.729 )
+rotation = -1.5708
+emitting = false
+amount = 100
+speed_scale = 1.5
+process_material = SubResource( 8 )
+
+[node name="TeleportTimer" type="Timer" parent="."]
 [connection signal="timeout" from="Drawer/Timer" to="Drawer" method="_on_Timer_timeout"]
-[connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
-[connection signal="area_exited" from="DamageArea" to="." method="_on_DamageArea_area_exited"]
 [connection signal="body_entered" from="DamageArea" to="." method="_on_DamageArea_body_entered"]
 [connection signal="body_exited" from="DamageArea" to="." method="_on_DamageArea_body_exited"]
 [connection signal="timeout" from="CircleAttacktimer" to="." method="_on_CircleAttacktimer_timeout"]
 [connection signal="timeout" from="MeleeAttackTimer" to="." method="_on_MeleeAttackTimer_timeout"]
+[connection signal="timeout" from="TeleportTimer" to="." method="_on_TeleportTimer_timeout"]
